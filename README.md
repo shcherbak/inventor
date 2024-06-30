@@ -39,6 +39,10 @@ More examples: `./test/end-to-end`
     * Returning target by ID
 * **DELETE /target**
     * Removing target by ID
+* **GET /metrics**
+    * Metrics in prometheus format
+* **GET /healthcheck**
+    * Health Check for kubernetes deployments
 
 
 ## Build Docker image
