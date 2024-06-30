@@ -43,7 +43,7 @@ More examples: `./test/end-to-end`
 
 ## Build Docker image
 ```bash
-docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) .
+docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) -f docker/Dockerfile .
 ```
 
 ## License
