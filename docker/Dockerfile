@@ -1,5 +1,5 @@
 FROM golang:1.21.11-bullseye AS builder
-ARG BUILD_VERSION='v1.2.3'
+ARG BUILD_VERSION='1.2.3'
 ENV LISTEN_PORT=9101
 WORKDIR /opt/inventor/
 COPY go.mod ./
