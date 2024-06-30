@@ -23,11 +23,11 @@ More examples: `./test/end-to-end`
 
 ## Configuration Environmet Valiables
 
-  `REDIS_ADDR`: redis server addres to store metrics and targets
-  `REDIS_PORT`: redis server port
-  `REDIS_DBNO`: redis server keyspace
-  `TTL_SECONDS`: ttl for storing target, default is 6h (21600 seconds)
-  `API_TOKEN`: API token for manipulating targets
+  * `REDIS_ADDR`: redis server addres to store metrics and targets
+  * `REDIS_PORT`: redis server port
+  * `REDIS_DBNO`: redis server keyspace
+  * `TTL_SECONDS`: ttl for storing target, default is 6h (21600 seconds)
+  * `API_TOKEN`: API token for manipulating targets
 
 ## API Methods
 
