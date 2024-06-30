@@ -45,6 +45,11 @@ More examples: `./test/end-to-end`
 ```bash
 docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) -f docker/Dockerfile .
 ```
+pulling image:
+```bash
+jushcherbak/inventor:0.0.1
+```
+
 
 ## License
 
