@@ -54,7 +54,6 @@ pulling image:
 jushcherbak/inventor:0.0.1
 ```
 
-
 ## License
 
 Covered under the [MIT license](LICENSE.md).
