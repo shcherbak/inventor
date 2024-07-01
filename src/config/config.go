@@ -11,6 +11,7 @@ import (
 type Config struct {
 	APP_ENV     string
 	API_TOKEN   string
+	SD_TOKEN    string
 	LISTEN_PORT string
 	REDIS_ADDR  string
 	REDIS_PORT  string
@@ -41,6 +42,10 @@ func init() {
 	_, found = os.LookupEnv("LISTEN_PORT")
 	if !found {
 		os.Setenv("LISTEN_PORT", "80")
+	}
+	_, found = os.LookupEnv("SD_TOKEN")
+	if !found {
+		os.Setenv("SD_TOKEN", "")
 	}
 	refl := reflect.ValueOf(config).Elem()
 	numFields := refl.NumField()

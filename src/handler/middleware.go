@@ -17,6 +17,7 @@ type SDTargetsMiddleware struct {
 	Client    *redis.Client
 	Context   context.Context
 	ApiToken  string
+	SdToken   string
 	TTL       int
 }
 
@@ -53,6 +54,12 @@ func (s *SDTargetsMiddleware) HandleSDTarget(w http.ResponseWriter, r *http.Requ
 }
 
 func (s *SDTargetsMiddleware) HandleDiscover(w http.ResponseWriter, r *http.Request) {
+	if s.SdToken != "" {
+		if !s.isSdTokenValid(r) {
+			s.forbiddenResponse(w)
+			return
+		}
+	}
 	switch strings.ToUpper(r.Method) {
 	case "GET":
 		w.Header().Set("Content-Type", "application/json")
@@ -147,6 +154,15 @@ func (s *SDTargetsMiddleware) HealthCheck(w http.ResponseWriter, r *http.Request
 func (s *SDTargetsMiddleware) isApiTokenValid(r *http.Request) bool {
 	token := r.Header.Get("x-api-token")
 	if token != s.ApiToken {
+		return false
+	} else {
+		return true
+	}
+}
+
+func (s *SDTargetsMiddleware) isSdTokenValid(r *http.Request) bool {
+	token := r.Header.Get("x-sd-token")
+	if token != s.SdToken {
 		return false
 	} else {
 		return true

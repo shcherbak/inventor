@@ -20,6 +20,18 @@ curl -X PUT -H "x-api-token: secret" http://127.0.0.1:9101/target \
 
 More examples: `./test/end-to-end`
 
+Prometheus SD config example
+```yaml
+scrape_configs:
+  - job_name: http_sd
+    http_sd_configs:
+      - url: http://127.0.0.1:9101/discover
+        # if SD_TOKEN env variable is set
+        headers:
+          - "x-sd-token: REDACTED"
+
+```
+
 
 ## Configuration Environmet Valiables
 
@@ -28,6 +40,7 @@ More examples: `./test/end-to-end`
   * `REDIS_DBNO`: redis server keyspace
   * `TTL_SECONDS`: ttl for storing target, default is 6h (21600 seconds)
   * `API_TOKEN`: API token for manipulating targets
+  * `SD_TOKEN`: Options token for Prometheus HTTP SD, is empty by default and not validating (header `x-sd-token`)
 
 ## API Methods
 
