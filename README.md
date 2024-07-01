@@ -23,11 +23,11 @@ More examples: `./test/end-to-end`
 
 ## Configuration Environmet Valiables
 
-  `REDIS_ADDR`: redis server addres to store metrics and targets
-  `REDIS_PORT`: redis server port
-  `REDIS_DBNO`: redis server keyspace
-  `TTL_SECONDS`: ttl for storing target, default is 6h (21600 seconds)
-  `API_TOKEN`: API token for manipulating targets
+  * `REDIS_ADDR`: redis server addres to store metrics and targets
+  * `REDIS_PORT`: redis server port
+  * `REDIS_DBNO`: redis server keyspace
+  * `TTL_SECONDS`: ttl for storing target, default is 6h (21600 seconds)
+  * `API_TOKEN`: API token for manipulating targets
 
 ## API Methods
 
@@ -39,11 +39,19 @@ More examples: `./test/end-to-end`
     * Returning target by ID
 * **DELETE /target**
     * Removing target by ID
+* **GET /metrics**
+    * Metrics in prometheus format
+* **GET /healthcheck**
+    * Health Check for kubernetes deployments
 
 
 ## Build Docker image
 ```bash
-docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) .
+docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) -f docker/Dockerfile .
+```
+pulling image:
+```bash
+jushcherbak/inventor:0.0.1
 ```
 
 ## License
