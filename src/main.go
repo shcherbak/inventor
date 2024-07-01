@@ -52,6 +52,7 @@ func main() {
 		Context:  ctx,
 		Client:   con,
 		ApiToken: config.GetConfig().API_TOKEN,
+		SdToken:  config.GetConfig().SD_TOKEN,
 		TTL:      ttlSeconds,
 	}
 
