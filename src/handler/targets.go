@@ -17,6 +17,7 @@ type StaticConfig struct {
 	ID        uuid.UUID         `json:"id"`
 	Targets   []string          `json:"targets"`
 	Labels    map[string]string `json:"labels"`
+	Group     string            `json:"target_group"`
 	UpdatedAt string            `json:"updated_at"` // unix timestamp
 }
 
@@ -35,6 +36,9 @@ var (
 func (c *SDTargets) Insert(target StaticConfig, ctx context.Context, con *redis.Client, ttl int) (uuid.UUID, error) {
 	target.ID = UUIDFromStringArray(target.Targets)
 	target.UpdatedAt = fmt.Sprint(time.Now().Unix())
+	if target.Group == "" {
+		target.Group = "inventor-default"
+	}
 	srt, err := json.Marshal(target)
 	if err != nil {
 		return target.ID, ErrMarshlFailed

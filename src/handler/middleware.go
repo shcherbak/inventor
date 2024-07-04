@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -108,7 +107,6 @@ func (s *SDTargetsMiddleware) handleGetByGroupName(w http.ResponseWriter, r *htt
 	targets, _ := s.SDTargets.Scan(s.Context, s.Client)
 	for _, target := range targets.Items {
 		if target.Group == grp {
-			fmt.Println(target)
 			res = append(res, HttpSD{target.Targets, target.Labels})
 		}
 	}
@@ -127,7 +125,7 @@ func (s *SDTargetsMiddleware) handleInsert(w http.ResponseWriter, r *http.Reques
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	id, e := s.SDTargets.Insert(req.SDTarget, s.SDGroup, s.Context, s.Client, s.TTL)
+	id, e := s.SDTargets.Insert(req.SDTarget, s.Context, s.Client, s.TTL)
 	if e != nil {
 		http.Error(w, e.Error(), http.StatusBadRequest)
 		return

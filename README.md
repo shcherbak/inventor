@@ -46,6 +46,8 @@ scrape_configs:
 
 * **GET /discover**
     * Returning the list of targets in Prometheus HTTP SD format
+* **GET /group**
+    * Returning targets by group name `/group?name=mygroup`
 * **PUT /target**
     * Adds the new target
 * **GET /target**
@@ -64,7 +66,7 @@ docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) 
 ```
 pulling image:
 ```bash
-jushcherbak/inventor:0.0.1
+jushcherbak/inventor:0.0.3
 ```
 
 ## License
