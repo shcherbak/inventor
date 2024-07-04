@@ -15,7 +15,7 @@ go run main.go
 Registering new target:
 ```bash
 curl -X PUT -H "x-api-token: secret" http://127.0.0.1:9101/target \
--d '{"static_config": {"targets": ["10.0.10.2:9100",], "labels": {"__meta_datacenter": "dc-01", "__meta_prometheus_job": "node"}}}'
+-d '{"static_config": {"targets": ["10.0.10.2:9100",], "labels": {"__meta_datacenter": "dc-01", "__meta_prometheus_job": "node"}, "target_group": "mygroup"}}'
 ```
 
 More examples: `./test/end-to-end`
@@ -26,6 +26,18 @@ scrape_configs:
   - job_name: http_sd
     http_sd_configs:
       - url: http://127.0.0.1:9101/discover
+        # if SD_TOKEN env variable is set
+        headers:
+          - "x-sd-token: REDACTED"
+
+```
+
+Prometheus SD config with groups example
+```yaml
+scrape_configs:
+  - job_name: http_sd_mygroup
+    http_sd_configs:
+      - url: http://127.0.0.1:9101/group?name=mygroup
         # if SD_TOKEN env variable is set
         headers:
           - "x-sd-token: REDACTED"
