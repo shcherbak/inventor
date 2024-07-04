@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -14,6 +15,7 @@ import (
 
 type SDTargetsMiddleware struct {
 	SDTargets *SDTargets
+	SDGroup   string
 	Client    *redis.Client
 	Context   context.Context
 	ApiToken  string
@@ -28,6 +30,7 @@ type HttpSD struct {
 
 type StaticConfigDocument struct {
 	SDTarget StaticConfig `json:"static_config"`
+	SDGroup  string       `json:"target_group"`
 }
 
 type IDDocument struct {
@@ -67,11 +70,47 @@ func (s *SDTargetsMiddleware) HandleDiscover(w http.ResponseWriter, r *http.Requ
 	}
 }
 
+func (s *SDTargetsMiddleware) HandleDiscoverGroup(w http.ResponseWriter, r *http.Request) {
+	if s.SdToken != "" {
+		if !s.isSdTokenValid(r) {
+			s.forbiddenResponse(w)
+			return
+		}
+	}
+	switch strings.ToUpper(r.Method) {
+	case "GET":
+		w.Header().Set("Content-Type", "application/json")
+		s.handleGetByGroupName(w, r)
+	}
+}
+
 func (s *SDTargetsMiddleware) handleGetAll(w http.ResponseWriter, r *http.Request) {
 	res := []HttpSD{}
 	targets, _ := s.SDTargets.Scan(s.Context, s.Client)
 	for _, target := range targets.Items {
 		res = append(res, HttpSD{target.Targets, target.Labels})
+	}
+	err := json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (s *SDTargetsMiddleware) handleGetByGroupName(w http.ResponseWriter, r *http.Request) {
+	res := []HttpSD{}
+
+	grp := r.URL.Query().Get("name")
+	if grp == "" {
+		http.Error(w, "Get parameter `name` is not defined", http.StatusBadRequest)
+		return
+	}
+	targets, _ := s.SDTargets.Scan(s.Context, s.Client)
+	for _, target := range targets.Items {
+		if target.Group == grp {
+			fmt.Println(target)
+			res = append(res, HttpSD{target.Targets, target.Labels})
+		}
 	}
 	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
@@ -88,7 +127,7 @@ func (s *SDTargetsMiddleware) handleInsert(w http.ResponseWriter, r *http.Reques
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	id, e := s.SDTargets.Insert(req.SDTarget, s.Context, s.Client, s.TTL)
+	id, e := s.SDTargets.Insert(req.SDTarget, s.SDGroup, s.Context, s.Client, s.TTL)
 	if e != nil {
 		http.Error(w, e.Error(), http.StatusBadRequest)
 		return
