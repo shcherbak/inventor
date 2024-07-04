@@ -4,6 +4,7 @@
     "labels": {
         "__meta_datacenter": "dc-02",
         "__meta_prometheus_job": "alertmanager"
-    }
+    },
+    "target_group": "alertmanager-exporter-group"
   }
 }

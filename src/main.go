@@ -92,6 +92,7 @@ func initSignalHandler() {
 func initRouting() {
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/target", registerTarget.HandleSDTarget)
+	http.HandleFunc("/group", registerTarget.HandleDiscoverGroup)
 	http.HandleFunc("/discover", registerTarget.HandleDiscover)
 	http.HandleFunc("/healthcheck", registerTarget.HealthCheck)
 }

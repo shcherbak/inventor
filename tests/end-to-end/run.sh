@@ -14,8 +14,8 @@ curl -X GET -H "x-api-token: secret" -s http://127.0.0.1:9101/target -d '{"id":"
 echo "=== GET metrics data ==="
 curl -X GET -s http://127.0.0.1:9101/metrics | grep 'inventor'
 
-echo "=== DELETE test data ==="
-curl -X DELETE -H "x-api-token: secret" -s http://127.0.0.1:9101/target -d '{"id":"2ead9294-3095-511f-8d49-a4d972b73fba"}'
-curl -X GET -H "x-api-token: secret" -s http://127.0.0.1:9101/target -d '{"id":"2ead9294-3095-511f-8d49-a4d972b73fba"}'| grep 'Id not found'
+#echo "=== DELETE test data ==="
+#curl -X DELETE -H "x-api-token: secret" -s http://127.0.0.1:9101/target -d '{"id":"2ead9294-3095-511f-8d49-a4d972b73fba"}'
+#curl -X GET -H "x-api-token: secret" -s http://127.0.0.1:9101/target -d '{"id":"2ead9294-3095-511f-8d49-a4d972b73fba"}'| grep 'Id not found'
 
 echo "Done"

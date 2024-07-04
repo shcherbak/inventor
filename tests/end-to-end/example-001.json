@@ -4,6 +4,7 @@
     "labels": {
         "__meta_datacenter": "dc-01",
         "__meta_prometheus_job": "node"
-    }
+    },
+    "target_group": "node-exporter-group"
   }
 }
