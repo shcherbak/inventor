@@ -74,7 +74,7 @@ scrape_configs:
 
 ## Build Docker image
 ```bash
-docker build -t $(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) -f docker/Dockerfile .
+docker build -t jushcherbak/inventor:$(cat VERSION.txt) --build-arg BUILD_VERSION=$(cat VERSION.txt) -f docker/Dockerfile .
 ```
 pulling image:
 ```bash
