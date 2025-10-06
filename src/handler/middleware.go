@@ -30,7 +30,6 @@ type SDTargetsMiddleware struct {
 type HttpSD struct {
 	Targets []string          `json:"targets"`
 	Labels  map[string]string `json:"labels"`
-	//Params  ParamsSD          `json:"params,omitempty"`
 }
 
 type StaticConfigDocument struct {
@@ -96,7 +95,7 @@ func (s *SDTargetsMiddleware) handleGetAll(w http.ResponseWriter, r *http.Reques
 		if len(target.Modules) > 0 {
 			for _, module := range target.Modules {
 				additionalLabels := map[string]string{
-					"module": module,
+					"__meta_inventor_sd_module": module,
 				}
 				maps.Copy(additionalLabels, target.Labels)
 				res = append(res, HttpSD{target.Targets, additionalLabels})
@@ -126,7 +125,7 @@ func (s *SDTargetsMiddleware) handleGetByGroupName(w http.ResponseWriter, r *htt
 			if len(target.Modules) > 0 {
 				for _, module := range target.Modules {
 					additionalLabels := map[string]string{
-						"module": module,
+						"__meta_inventor_sd_module": module,
 					}
 					maps.Copy(additionalLabels, target.Labels)
 					res = append(res, HttpSD{target.Targets, additionalLabels})
