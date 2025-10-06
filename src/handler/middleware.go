@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"maps"
 	"net/http"
 	"strings"
 	"sync"
@@ -22,9 +23,14 @@ type SDTargetsMiddleware struct {
 	TTL       int
 }
 
+//type ParamsSD struct {
+//	Modules []string `json:"modules,omitempty"`
+//}
+
 type HttpSD struct {
 	Targets []string          `json:"targets"`
 	Labels  map[string]string `json:"labels"`
+	//Params  ParamsSD          `json:"params,omitempty"`
 }
 
 type StaticConfigDocument struct {
@@ -87,7 +93,17 @@ func (s *SDTargetsMiddleware) handleGetAll(w http.ResponseWriter, r *http.Reques
 	res := []HttpSD{}
 	targets, _ := s.SDTargets.Scan(s.Context, s.Client)
 	for _, target := range targets.Items {
-		res = append(res, HttpSD{target.Targets, target.Labels})
+		if len(target.Modules) > 0 {
+			for _, module := range target.Modules {
+				additionalLabels := map[string]string{
+					"module": module,
+				}
+				maps.Copy(additionalLabels, target.Labels)
+				res = append(res, HttpSD{target.Targets, additionalLabels})
+			}
+		} else {
+			res = append(res, HttpSD{target.Targets, target.Labels})
+		}
 	}
 	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
@@ -107,7 +123,17 @@ func (s *SDTargetsMiddleware) handleGetByGroupName(w http.ResponseWriter, r *htt
 	targets, _ := s.SDTargets.Scan(s.Context, s.Client)
 	for _, target := range targets.Items {
 		if target.Group == grp {
-			res = append(res, HttpSD{target.Targets, target.Labels})
+			if len(target.Modules) > 0 {
+				for _, module := range target.Modules {
+					additionalLabels := map[string]string{
+						"module": module,
+					}
+					maps.Copy(additionalLabels, target.Labels)
+					res = append(res, HttpSD{target.Targets, additionalLabels})
+				}
+			} else {
+				res = append(res, HttpSD{target.Targets, target.Labels})
+			}
 		}
 	}
 	err := json.NewEncoder(w).Encode(res)
