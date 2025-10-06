@@ -84,7 +84,7 @@ docker build -t jushcherbak/inventor:$(cat VERSION.txt) --build-arg BUILD_VERSIO
 ```
 pulling image:
 ```bash
-jushcherbak/inventor:0.1.0
+jushcherbak/inventor:0.1.1
 ```
 
 ## License
